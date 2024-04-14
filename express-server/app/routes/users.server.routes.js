@@ -2,6 +2,7 @@
 var users = require('../controllers/users.server.controller');
 var express = require('express');
 var router = express.Router();
+
 // Define the routes module' method
 module.exports = function (app) {
     // handle a get request made to /users path

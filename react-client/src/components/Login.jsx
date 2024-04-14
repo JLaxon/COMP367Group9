@@ -5,8 +5,6 @@ import './login.css'
 // 
 import axios from 'axios';
 //
-import View from './View'
-//
 // this is the login component
 function App() {
   //state variable for the screen, admin or user
