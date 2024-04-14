@@ -23,19 +23,20 @@ function CreateUser(props) {
   const [showLoading, setShowLoading] = useState(false);
   const apiUrl = "/api";
 
-  const saveUser = (e) => {
-    e.preventDefault();
-    setShowLoading(true);
-    const data = { ...user };
-    axios.post(apiUrl, data)
-      .then((result) => {
-        setShowLoading(false);
-        navigate('/show/' + result.data._id);
-      })
-      .catch((error) => {
-        setShowLoading(false);
-        console.error("Error saving user:", error);
-      });
+  const saveUser = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    setShowLoading(true); // Show loading spinner
+    
+    try {
+      const data = { ...user };
+      const result = await axios.post(apiUrl, data);
+      setShowLoading(false); // Hide loading spinner
+      navigate('/show/' + result.data._id); // Navigate to show page
+    } catch (error) {
+      setShowLoading(false); // Hide loading spinner
+      console.error("Error saving user:", error);
+      // Handle error (e.g., display error message)
+    }
   };
 
   const onChange = (e) => {
