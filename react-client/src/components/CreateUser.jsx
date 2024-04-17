@@ -10,7 +10,6 @@ function CreateUser(props) {
   let navigate = useNavigate();
 
   const [user, setUser] = useState({
-    _id: '',
     username: '',
     password: '',
     firstName: '',
