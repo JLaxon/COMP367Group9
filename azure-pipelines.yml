@@ -4,30 +4,43 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.x'
-    displayName: 'Install Node.js'
+stages:
+- stage: Build_and_Test
+  displayName: 'Build and Test'
+  jobs:
+  - job: Build
+    displayName: 'Build the project'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+        displayName: 'Install Node.js'
 
-- script: |
-    npm install
-  displayName: 'Install dependencies'
+    - script: |
+        npm install
+      displayName: 'Install dependencies'
 
-- script: |
-    npm run build
-  displayName: 'Build the project'
+    - script: |
+        npm run build
+      displayName: 'Build the project'
 
-- script: |
-    npm test
-  displayName: 'Run tests'
+  - job: Test
+    displayName: 'Run tests'
+    steps:
+    - script: |
+        npm test
+      displayName: 'Run tests'
 
-- script: |
-    # Code coverage can be generated using appropriate tools like istanbul/nyc
-    npm run coverage
-  displayName: 'Generate code coverage'
+    - script: |
+        npm run coverage
+      displayName: 'Generate code coverage'
 
-# Code static analysis tools like ESLint can be used for static analysis
-- script: |
-    npm run lint
-  displayName: 'Run static analysis'
+- stage: Static_Analysis
+  displayName: 'Static Analysis'
+  jobs:
+  - job: Static_Analysis
+    displayName: 'Run static analysis'
+    steps:
+    - script: |
+        npm run lint
+      displayName: 'Run static analysis'
