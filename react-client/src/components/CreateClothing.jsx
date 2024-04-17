@@ -11,15 +11,15 @@ function CreateClothing(props) {
     //
     const username = props.screen;
     console.log('props.screen',props.screen)
-    const [clothing, setClothing] = useState({ _id: '', name: '', courseName: '', section: '', semester: '' });
+    const [clothing, setClothing] = useState({ _id: '', name: '', category: '', price: 0 });
     const [showLoading, setShowLoading] = useState(false);
     //
-    const apiUrl = "api/api/clothing"
+    const apiUrl = "api/api/clothes"
     //
     const saveClothing = (e) => {
         setShowLoading(true);
         e.preventDefault();
-        const data = {courseCode: clothing.courseCode, courseName: clothing.courseName, section: clothing.section, semester: clothing.semester };
+        const data = {name: clothing.name, category: clothing.category, price: clothing.price };
         //
         axios.post(apiUrl, data)
         .then((result) => {
