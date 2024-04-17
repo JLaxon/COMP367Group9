@@ -10,7 +10,7 @@ function ShowClothing(props) {
 
   const [data, setData] = useState({});
   const [showLoading, setShowLoading] = useState(true);
-  const apiUrl = `/api/clothes/${id}`;
+  const apiUrl = `/api/api/clothes/${id}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +27,7 @@ function ShowClothing(props) {
     fetchData();
   }, [apiUrl]);
 
-  const addClothingToCart = () => {
+  /*const addClothingToCart = () => {
     const apiUrl = `/api/cart/add/${id}`;
 
     axios.post(apiUrl)
@@ -39,7 +39,7 @@ function ShowClothing(props) {
         console.error('Error adding clothing to cart:', error);
         // Optionally show an error message
       });
-  };
+  };*/
 
   const editClothing = () => {
     navigate(`/editclothing/${id}`);
@@ -66,11 +66,11 @@ function ShowClothing(props) {
         </Spinner>
       ) : (
         <>
-          <h1>Name: {data.name}</h1>
-          <p>Category: {data.category}</p>
-          <p>Price: {data.price}</p>
+          <p>Name: {data.name}</p>
+              <p>Category: {data.category}</p>
+              <p>Price: ${data.price}</p>
 
-          <Button variant="success" onClick={addClothingToCart}>Add to Cart</Button>&nbsp;
+          <Button variant="success" onClick={"addClothingToCart"}>Add to Cart</Button>&nbsp;
           <Button variant="primary" onClick={editClothing}>Edit</Button>&nbsp;
           <Button variant="danger" onClick={deleteClothing}>Delete</Button>
         </>
