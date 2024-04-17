@@ -16,6 +16,7 @@ import Container from 'react-bootstrap/Container';
 import './App.css';
 //
 import ListUsers from './components/ListUsers';
+import CreateClothing from './components/CreateClothing';
 import EditUser from './components/EditUser';
 import EditClothing from './components/EditClothing';
 import CreateUser from './components/CreateUser';
@@ -37,7 +38,6 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link as={Link} to="/home" >Home</Nav.Link>
-              <Nav.Link as={Link} to="/view" >View</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/listusers">List of Users</Nav.Link>
               <Nav.Link as={Link} to="/listclothes">List of Clothes</Nav.Link>
@@ -52,6 +52,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />          
           <Route path="create" element ={< CreateUser />} />
+          <Route path="createclothing" element ={< CreateClothing />} />
           <Route path="login" element= {< Login />}  />
           <Route path="listusers" element= {< ListUsers />}  />
           <Route path="listclothes" element= {< ListClothes />}  />
