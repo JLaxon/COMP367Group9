@@ -3,77 +3,78 @@ import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams } from 'react-router-dom';
-//
-// this component is used to show a single clothing
+
 function ShowClothing(props) {
-  let navigate = useNavigate()
-  let {id} = useParams();
-  //
+  let navigate = useNavigate();
+  let { id } = useParams();
+
   const [data, setData] = useState({});
   const [showLoading, setShowLoading] = useState(true);
-  const apiUrl = "/api/api/clothes/" + id;
+  const apiUrl = `/api/clothes/${id}`;
 
   useEffect(() => {
-    setShowLoading(false);
     const fetchData = async () => {
-      const result = await axios(apiUrl);
-      console.log('results from clothes',result.data);
-
-      setData(result.data);
-      setShowLoading(false);
+      try {
+        const result = await axios.get(apiUrl);
+        setData(result.data);
+        setShowLoading(false);
+      } catch (error) {
+        console.error('Error fetching clothing:', error);
+        setShowLoading(false);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [apiUrl]);
 
-  const addClothing = (clothingId) => {
-    const apiUrl = `/addClothing/${clothingId}`; 
-    // Get the authentication token from cookies
-    const token = document.cookie.split('; ').find(row => row.startsWith('token')).split('=')[1];
-  
-    // Make a POST request to your server to add the course to the user's list
-    axios.post(apiUrl, {}, { headers: { Authorization: `Bearer ${token}` } })
+  const addClothingToCart = () => {
+    const apiUrl = `/api/cart/add/${id}`;
+
+    axios.post(apiUrl)
       .then(response => {
-        // Handle the success response, e.g., update the UI or show a success message
-        console.log('Clothing added successfully:', response.data);
+        console.log('Clothing added to cart:', response.data);
+        // Optionally update UI or show a success message
       })
       .catch(error => {
-        // Handle errors, e.g., show an error message
-        console.error('Error adding clothing:', error);
+        console.error('Error adding clothing to cart:', error);
+        // Optionally show an error message
       });
   };
 
-  const editClothing = (id) => {
-    navigate('/editclothing/' + id);
-    
+  const editClothing = () => {
+    navigate(`/editclothing/${id}`);
   };
 
-  const deleteClothing = (id) => {
+  const deleteClothing = () => {
     setShowLoading(true);
-    const clothing = { name: data.name, category: data.category,
-    price: data.price, };
-    //
-    axios.delete(apiUrl, clothing)
-      .then((result) => {
+    axios.delete(apiUrl)
+      .then(result => {
+        console.log('Clothing deleted:', result.data);
+        navigate('/listclothes');
+      })
+      .catch(error => {
+        console.error('Error deleting clothing:', error);
         setShowLoading(false);
-        navigate('/listclothes')
-      }).catch((error) => setShowLoading(false));
+      });
   };
 
   return (
     <div>
-      {showLoading && <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
-      </Spinner> }    
-        <h1>Name: {data.Name}</h1>
-        <p>Category: {data.category}</p>
-        <p>Price: {data.price}</p>
+      {showLoading ? (
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      ) : (
+        <>
+          <h1>Name: {data.name}</h1>
+          <p>Category: {data.category}</p>
+          <p>Price: {data.price}</p>
 
-        <p>
-          <Button type="button" variant="success" onClick={() => { addClothing(data._id) }}>Add to My Clothes</Button>&nbsp;
-          <Button type="button" variant="primary" onClick={() => { editClothing(data._id) }}>Edit</Button>&nbsp;
-          <Button type="button" variant="danger" onClick={() => { deleteClothing(data._id) }}>Delete</Button>
-        </p>
+          <Button variant="success" onClick={addClothingToCart}>Add to Cart</Button>&nbsp;
+          <Button variant="primary" onClick={editClothing}>Edit</Button>&nbsp;
+          <Button variant="danger" onClick={deleteClothing}>Delete</Button>
+        </>
+      )}
     </div>
   );
 }

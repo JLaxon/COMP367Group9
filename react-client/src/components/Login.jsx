@@ -10,8 +10,8 @@ function App() {
   //state variable for the screen, admin or user
   const [screen, setScreen] = useState('auth');
   //store input field data, username and password
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const apiUrl = "/api/signin";
   //send username and password to the server
   // for initial authentication
